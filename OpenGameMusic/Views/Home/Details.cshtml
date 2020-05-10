@@ -1,0 +1,28 @@
+﻿@model OpenGameMusic.ViewModels.HomeDetailsViewModel
+
+
+
+<div class="row justify-content-center m-3">
+    <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                <h1>@Model.Song.Artist @Model.Song.SongName</h1>
+            </div>
+
+            <div class="card-body text-center">
+                <img class="card-img-top" src="~/images/noimage.jpg" />
+
+                <h4>Song ID : @Model.Song.Id</h4>
+                <h4>Artist : @Model.Song.Artist</h4>
+                <h4>Song Name : @Model.Song.SongName</h4>
+                <h4>Licence : @Model.Song.Licence</h4>
+            </div>
+            <div class="card-footer text-center">
+                <a href="#" class="btn btn-primary">Back</a>
+                <a href="#" class="btn btn-primary">Edit</a>
+                <a href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
