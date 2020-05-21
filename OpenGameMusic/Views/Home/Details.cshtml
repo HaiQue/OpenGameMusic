@@ -1,6 +1,9 @@
-﻿@model OpenGameMusic.ViewModels.HomeDetailsViewModel
+﻿@model HomeDetailsViewModel
 
-
+@{ 
+    ViewBag.Title = "Song Details";
+    var photoPath = "~/Images/" + (Model.Song.PhotoPath ?? "noimage.jpg");
+}
 
 <div class="row justify-content-center m-3">
     <div class="col-sm-8">
@@ -10,19 +13,25 @@
             </div>
 
             <div class="card-body text-center">
-                <img class="card-img-top" src="~/images/noimage.jpg" />
+                <img class="card-img-top" src="@photoPath" asp-append-version="true"/>
 
                 <h4>Song ID : @Model.Song.Id</h4>
                 <h4>Artist : @Model.Song.Artist</h4>
                 <h4>Song Name : @Model.Song.SongName</h4>
-                <h4>Licence : @Model.Song.Licence</h4>
+                <h4>License : @Model.Song.License</h4>
             </div>
             <div class="card-footer text-center">
-                <a href="#" class="btn btn-primary">Back</a>
-                <a href="#" class="btn btn-primary">Edit</a>
+                <a asp-controller="home" asp-action="index2"  class="btn btn-primary">Back</a>
+                <a asp-action="edit" asp-controller="home"
+                   asp-route-id="@Model.Song.Id"
+                   class="btn btn-primary">Edit</a>
                 <a href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/customScript.js"></script>
+ }
 

@@ -10,5 +10,8 @@ namespace OpenGameMusic.Models
         Song GetSong(int Id);
 
         IEnumerable<Song> GetAllSongs();
+        Song Add(Song song);
+        Song Update(Song songChanges);
+        Song Delete(int id);
     }
 }

@@ -1,0 +1,16 @@
+﻿@model OpenGameMusic.Models.FileViewModel
+
+
+<h3>List of Files</h3>
+
+<ul>
+    @foreach (var item in Model.Files)
+    {
+        <li>
+            <a asp-action="DownloadMusic"
+               asp-route-filename="@item.Name">
+                @item.Name
+            </a>
+        </li>
+    }
+</ul>

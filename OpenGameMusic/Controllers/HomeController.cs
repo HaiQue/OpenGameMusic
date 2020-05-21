@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using OpenGameMusic.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 namespace OpenGameMusic.Controllers
 {
@@ -20,22 +21,20 @@ namespace OpenGameMusic.Controllers
     public class HomeController : Controller
     {
 
-        /*        private readonly ILogger<HomeController> _logger;
-
-                public HomeController(ILogger<HomeController> logger)
-                {
-                    _logger = logger;
-                }*/
-
-        // test
-
         private readonly ISongRepository _songRepository;
         private readonly IFileProvider fileProvider;
 
-        public HomeController(ISongRepository songRepository, IFileProvider fileProvider)
+        private readonly ILogger<HomeController> _logger;
+
+        private readonly IHostingEnvironment hostingEnvironment;
+
+
+        public HomeController(ISongRepository songRepository, IFileProvider fileProvider,
+                               IHostingEnvironment hostingEnvironment)
         {
             _songRepository = songRepository;
             this.fileProvider = fileProvider;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         public ViewResult Index2()
@@ -45,18 +44,121 @@ namespace OpenGameMusic.Controllers
         }
 
 
-        public ViewResult Details()
+        public ViewResult Details(int? id) // int id
         {
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Song = _songRepository.GetSong(1),
+                Song = _songRepository.GetSong(id ?? 1), // id
                 PageTitle = "Song Details"
             };
-            Song model = _songRepository.GetSong(1);
+            //Song model = _songRepository.GetSong(id); //  id
             //ViewBag.Song = model;
             ViewBag.PageTitle = "Song Details";
 
             return View(homeDetailsViewModel);
+        }
+
+        [HttpGet]
+        public ViewResult Create()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ViewResult Edit(int id) // public ViewResult Edit (int id)
+        {
+            Song song = _songRepository.GetSong(id);
+            SongEditViewModel songEditViewModel = new SongEditViewModel
+            {
+                Id = song.Id,
+                Artist = song.Artist,
+                SongName = song.SongName,
+                License = song.License,
+                ExistingPhotoPath = song.PhotoPath
+            };
+            return View(songEditViewModel);
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(SongEditViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Song song = _songRepository.GetSong(model.Id);
+                song.Artist = model.Artist;
+                song.SongName = model.SongName;
+                song.License = model.License;
+                string uniqueFileName = ProcessUploadedFile(model);
+
+                //string uniqueFileName = null;
+                if (model.Photo != null)
+                {
+                    if (model.ExistingPhotoPath != null)
+                    {
+                        string filePath = Path.Combine(hostingEnvironment.WebRootPath,
+                             "images", model.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                    song.PhotoPath = ProcessUploadedFile(model);
+
+                }
+                Song newSong = new Song
+                {
+                    Artist = model.Artist,
+                    SongName = model.SongName,
+                    License = model.License,
+                    PhotoPath = uniqueFileName
+                };
+
+
+                Song updatedSong = _songRepository.Update(song);
+                return RedirectToAction("index2");
+            }
+
+            return View();
+        }
+
+        private string ProcessUploadedFile(SongCreateViewModel model)
+        {
+            string uniqueFileName = null;
+            if (model.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.Photo.CopyTo(fileStream);
+                }
+                model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
+
+            return uniqueFileName;
+        }
+
+        [HttpPost]
+        public IActionResult UploadMusic(SongCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                string uniqueFileName = ProcessUploadedFile(model);
+
+                Song newSong = new Song
+                {
+                    Artist = model.Artist,
+                    SongName = model.SongName,
+                    License = model.License,
+                    PhotoPath = uniqueFileName
+                };
+
+                _songRepository.Add(newSong);
+                return RedirectToAction("Details", new { id = newSong.Id });
+            }
+
+            return View();
         }
 
 
@@ -70,78 +172,67 @@ namespace OpenGameMusic.Controllers
             return View();
         }
 
-/*        private readonly IFileProvider fileProvider;
-
-        public HomeController(IFileProvider fileProvider)
-        {
-            this.fileProvider = fileProvider;
-        }
-*/
         [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile file)
+        [RequestFormLimits(MultipartBodyLengthLimit = 25000000)]  // we support 25 mb  // 409715200
+        [RequestSizeLimit(25000000)]
+        public IActionResult Upload(IFormFile file, [FromServices] IWebHostEnvironment webHostEnvironment)
         {
-            if (file == null || file.Length == 0)
-                return Content("file not selected");
+            string fileName = $"{webHostEnvironment.WebRootPath}" +
+                    $"\\UploadedFiles\\{file.FileName}";
 
-            var path = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot//music",
-                        file.GetFilename());
+            // file.Filter = "mp3|*.mp3|All Files|*.*";
 
-            using (var stream = new FileStream(path, FileMode.Create))
+            string[] AcceptableMusicFileTypes = { ".flac", ".aac", ".wav", ".mp3", ".m4a" };
+            bool IsFileValidFormat = false;
+
+            for (int i = 0; i < AcceptableMusicFileTypes.Length; i++)
             {
-                await file.CopyToAsync(stream);
+                if (file.FileName.EndsWith(AcceptableMusicFileTypes[i]))
+                {
+                    IsFileValidFormat = true;
+                    ViewData["message"] = "Your music file is uploaded succesfuly.";
+                    using (FileStream fileStream = System.IO.File.Create(fileName))
+                    {
+                        file.CopyTo(fileStream);
+                        fileStream.Flush();
+                    }
+                }
             }
 
-            return RedirectToAction("Files");
+            if (IsFileValidFormat == false)
+            {
+                ViewData["message"] = $"File is not acceptable format, This platform supports: " +
+                   $".flac, .aac, .wav, .mp3, .m4a types of music files. Your file name is: {file.FileName }";
+            }
+
+            return View("Index");
         }
 
-
-        public IActionResult Files()
+        [HttpGet]
+        public IActionResult ListOfFiles()
         {
             var model = new FileViewModel();
             foreach (var item in this.fileProvider.GetDirectoryContents(""))
             {
                 model.Files.Add(
-                    new FileDetails {Name = item.Name, Path = item.PhysicalPath });
+                    new FileDetails { Name = item.Name, Path = item.PhysicalPath });
             }
             return View(model);
         }
 
-        public async Task<IActionResult> Download(string filename)
+        [HttpGet]
+        public ActionResult DownloadMusic(string fileName)
         {
-            if (filename == null)
-                return Content("filename not present");
+            if (fileName == null)
+                return Content("file Name is not present");
 
-            var path = Path.Combine(
-                           Directory.GetCurrentDirectory(),
-                           "wwwroot//music", filename);
+            var filePath = Path.Combine(
+               Directory.GetCurrentDirectory(),
+               "wwwroot//UploadedFiles", fileName);
 
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
-            }
-            memory.Position = 0;
-            return File(memory, GetContentType(path), Path.GetFileName(path));
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            return File(fileBytes, "application/force-download", fileName);
         }
-
-        private string GetContentType(string path)
-        {
-            var types = GetMimeTypes();
-            var ext = Path.GetExtension(path).ToLowerInvariant();
-            return types[ext];
-        }
-
-        private Dictionary<string, string> GetMimeTypes()
-        {
-            return new Dictionary<string, string>
-            {
-                {".aac", "audio/aac"},
-                {".wav", "audio/wav"},
-                {".flac", "audio/flac"},
-                {".mp3", "audio/mp3"}
-            };
-        }
-
     }
 }

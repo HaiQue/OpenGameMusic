@@ -1,11 +1,71 @@
-﻿
-<h3> Upload Music </h3>
+﻿@model SongCreateViewModel
 
-<form asp-controller="Home" asp-action="UploadFile" method="post"
+@{
+    ViewBag.Title = "Upload Music";
+}
+
+<form enctype="multipart/form-data" asp-controller="Home" asp-action="UploadMusic" method="post" class="mt-3">
+    <div class="form-group row">
+        <label asp-for="Artist" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Artist" class="form-control" placeholder="Artist">
+            <span asp-validation-for="Artist" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="SongName" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="SongName" class="form-control" placeholder="Song Name">
+            <span asp-validation-for="SongName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="License" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <select asp-for="License" class="custom-select mr-sm-2"
+                    asp-items="Html.GetEnumSelectList<Dept>()">
+                <option value="">Please Select</option>
+            </select>
+            <span asp-validation-for="License" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <div class="custom-file">
+                <input asp-for="Photo" class="form-control custom-file-input">
+                <label class="custom-file-label">Choose File...</label>
+            </div>
+        </div>
+    </div>
+
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+    @section Scripts{
+        <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+
+                });
+            });
+        </script>
+    }
+</form>
+
+<form asp-controller="Home" asp-action="Upload" method="post"
       enctype="multipart/form-data">
+    <input type="file" class="custom-file-upload"  name="file">
+    <br /><br /><br /><br />
 
-    <input type="file" class="custom-file-upload" name="file" />
-
-    <button type="submit" class="btn btn-primary"> Upload File </button>
-
+    <button type="submit" class="btn-primary">Upload File</button>
 </form>

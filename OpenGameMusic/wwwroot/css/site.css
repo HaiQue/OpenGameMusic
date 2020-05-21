@@ -64,6 +64,12 @@ a {
     width: 75px;
 }
 
+.imageThumbnail{
+    height:200px;
+    width:auto;
+}
+
+
 .btn-primary {
     color: #fff;
     background-color: #252152;

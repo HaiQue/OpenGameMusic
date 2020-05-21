@@ -158,8 +158,10 @@ C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\R
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_AuthLayout.cshtml.g.cs
-C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Home\Files.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Home\UploadMusic.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Home\Details.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index2.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\libman.json
+C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\web.config
+C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Home\ListOfFiles.cshtml.g.cs
+C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Home\Edit.cshtml.g.cs

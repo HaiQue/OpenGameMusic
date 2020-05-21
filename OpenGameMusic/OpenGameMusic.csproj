@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\music\" />
+    <Folder Include="wwwroot\UploadedFiles\" />
   </ItemGroup>
 
 
