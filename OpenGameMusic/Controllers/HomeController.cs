@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OpenGameMusic.Models;
 
-
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
@@ -24,7 +23,7 @@ namespace OpenGameMusic.Controllers
         private readonly ISongRepository _songRepository;
         private readonly IFileProvider fileProvider;
 
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
 
         private readonly IHostingEnvironment hostingEnvironment;
 
@@ -44,18 +43,21 @@ namespace OpenGameMusic.Controllers
         }
 
 
-        public ViewResult Details(int? id) // int id
+        public ViewResult Details(int? id) 
+        {
+            HomeDetailsViewModel homeDetailsViewModel = CreateHomeDetailsViewModel(id);
+            ViewBag.PageTitle = "Song Details";
+            return View(homeDetailsViewModel);
+        }
+
+        public HomeDetailsViewModel CreateHomeDetailsViewModel(int? id)
         {
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
             {
                 Song = _songRepository.GetSong(id ?? 1), // id
                 PageTitle = "Song Details"
             };
-            //Song model = _songRepository.GetSong(id); //  id
-            //ViewBag.Song = model;
-            ViewBag.PageTitle = "Song Details";
-
-            return View(homeDetailsViewModel);
+            return homeDetailsViewModel;
         }
 
         [HttpGet]
@@ -83,7 +85,6 @@ namespace OpenGameMusic.Controllers
         [HttpPost]
         public IActionResult Edit(SongEditViewModel model)
         {
-
             if (ModelState.IsValid)
             {
                 Song song = _songRepository.GetSong(model.Id);
@@ -92,7 +93,6 @@ namespace OpenGameMusic.Controllers
                 song.License = model.License;
                 string uniqueFileName = ProcessUploadedFile(model);
 
-                //string uniqueFileName = null;
                 if (model.Photo != null)
                 {
                     if (model.ExistingPhotoPath != null)
@@ -111,7 +111,6 @@ namespace OpenGameMusic.Controllers
                     License = model.License,
                     PhotoPath = uniqueFileName
                 };
-
 
                 Song updatedSong = _songRepository.Update(song);
                 return RedirectToAction("index2");
@@ -143,7 +142,6 @@ namespace OpenGameMusic.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 string uniqueFileName = ProcessUploadedFile(model);
 
                 Song newSong = new Song
@@ -173,7 +171,7 @@ namespace OpenGameMusic.Controllers
         }
 
         [HttpPost]
-        [RequestFormLimits(MultipartBodyLengthLimit = 25000000)]  // we support 25 mb  // 409715200
+        [RequestFormLimits(MultipartBodyLengthLimit = 25000000)]  // we support 25 mb  
         [RequestSizeLimit(25000000)]
         public IActionResult Upload(IFormFile file, [FromServices] IWebHostEnvironment webHostEnvironment)
         {

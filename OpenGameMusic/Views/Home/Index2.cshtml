@@ -4,11 +4,10 @@
     ViewBag.Title = "Song List";
 }
 
-
 <div class="card-deck">
     @foreach (var song in Model)
     {
-       var photoPath = "~/Images/" + (song.PhotoPath ?? "noimage.jpg");
+        var photoPath = "~/Images/" + (song.PhotoPath ?? "noimage.jpg");
         <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
             <div class="card-header">
                 <h5>@song.Artist @song.SongName</h5>

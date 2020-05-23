@@ -148,8 +148,6 @@ C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\r
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\OpenGameMusic.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\OpenGameMusic.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
@@ -165,3 +163,7 @@ C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\l
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\web.config
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Home\ListOfFiles.cshtml.g.cs
 C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\Razor\Views\Home\Edit.cshtml.g.cs
+C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\Castle.Core.dll
+C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\bin\Debug\netcoreapp3.1\FakeItEasy.dll
+C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\OpenGameMusic.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\HaiQ\source\repos\OpenGameMusic\OpenGameMusic\obj\Debug\netcoreapp3.1\OpenGameMusic.MvcApplicationPartsAssemblyInfo.cache
